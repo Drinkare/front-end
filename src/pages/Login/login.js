@@ -4,58 +4,30 @@ import "./login.element.css";
 
 import KakaoLogin from "react-kakao-login";
 
+import kakaoLogo from "../../assets/kakao_login_medium_narrow.png";
 import React, { useState } from "react";
 import axios from "axios";
 
 const Login = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // 카카오 로그인 함수를 실행시키면 아래에 설정해 놓은 KAKAO_AUTH_URL 주소로 이동한다.
+  // 이동 된 창에서 kakao 계정 로그인을 시도할 수 있으며 로그인 버튼 클릭 시 Redirect URI로 이동하면서 빈 화면과 함게 인가코드가 발급된다.(인가코드는 파라미터 값에 들어가 있다!)
+  const REST_API_KEY = "532d7168dd0821f3756ea1293ba8dea4";
+  const REDIRECT_URI = "http://localhost:3000/login";
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
-  const handleLogin = () => {
-    window.Kakao.Auth.login({
-      success: (authObj) => {
-        // 인증 성공 시 처리할 로직
-        const accessToken = authObj.access_token;
-        setIsLoggedIn(true);
-        getUserInfo(accessToken);
-      },
-      fail: (error) => {
-        // 인증 실패 시 처리할 로직
-        console.log(error);
-      },
-    });
-  };
+  // const KAKAO_AUTH_URL = `https://kauth.kakao.com/login/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
-  const getUserInfo = (accessToken) => {
-    axios({
-      method: "get",
-      url: "https://kapi.kakao.com/v2/user/me",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
-      .then((response) => {
-        // 사용자 정보를 가져온 후 처리할 로직
-        console.log(response.data);
-      })
-      .catch((error) => {
-        // 오류 처리
-        console.log(error);
-      });
+  const kakaoLogin = () => {
+    window.location.href = KAKAO_AUTH_URL;
   };
 
   return (
-    <div className="loginContainer">
-      {isLoggedIn ? (
-        <div>
-          <p>로그인되었습니다!</p>
-          {/* 여기에 로그인 후 사용자 정보를 표시할 수 있습니다. */}
-        </div>
-      ) : (
-        <button className="loginBtn" onClick={handleLogin}>
-          카카오톡으로 로그인
-        </button>
-      )}
-    </div>
+    <React.Fragment>
+      <button className="loginBtn" onClick={kakaoLogin}>
+        <img src={kakaoLogo} />
+      </button>
+      {/* 로그인 성공된 담에 ./main화면으로 이동해야힘 */}
+    </React.Fragment>
   );
 };
 

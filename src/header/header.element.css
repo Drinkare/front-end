@@ -1,0 +1,21 @@
+.headerContainer {
+    background-color: var(--app-color-primary);
+    height: 15vh;
+    padding: 20px;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color:white;
+    box-sizing: border-box;
+}
+.headerMaintext{
+    font-size: 18px;
+    font-weight: 500;
+    
+
+}
+.headerSubtext{
+    font-size: 38px;
+    font-weight: 800;
+}

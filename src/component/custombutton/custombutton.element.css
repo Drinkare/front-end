@@ -1,0 +1,17 @@
+.btnContainer{
+    width: 120px;
+    height: 40px;
+    outline: none;
+    border-style: none;
+    font-size:20px;
+    border-radius: 10px;
+    color:white;
+}
+
+.primary {
+    background-color: var(--app-color-primary);
+}
+
+.secondary {
+    background-color: var(--app-color-secondary);
+}

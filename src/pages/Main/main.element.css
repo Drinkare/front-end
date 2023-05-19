@@ -1,0 +1,36 @@
+.mainCalendar{
+    height: 50vh;
+    padding:20px;
+}
+.dotContainer{
+  display:flex;
+  justify-content: center;
+}
+
+.dot{
+  height:8px;
+  width:8px;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: var(--app-color-primary);
+
+}
+.navigatorBar{
+    background-color: var(--app-color-primary);
+    flex-basis: 33%;
+    height:6vh;
+    width:100vw;
+    position:fixed;
+    bottom: 0px;
+    display:flex;
+    justify-content:space-between;
+}
+
+
+.iconContent{
+  margin:10px;
+  flex-basis:33%;
+}

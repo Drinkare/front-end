@@ -1,18 +1,24 @@
-.loginContainer{
+.kakaoLoginContainer{
+   
     height: 80vh;
     display:flex;
     justify-content: center;
     align-items: center;
+        
     
+
 }
 .loginBtn{
     border:none;
     background-color: transparent;
-    position:fixed;
-    top:50%;
     left: 25%;
     display:flex;
     justify-content: center;
     align-items: center;
 
+}
+.kakaoLogoIcon{
+    width:45px;
+    height: 45px;
+    border-radius: 10px;
 }

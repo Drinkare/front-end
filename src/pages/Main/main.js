@@ -16,7 +16,6 @@ const mark = ["2023-05-15", "2023-05-12", "2023-05-10"];
 
 const Main = () => {
   const [value, onChange] = useState(new Date());
-
   const navigate = useNavigate();
 
   const handleCameraClick1 = useCallback(() => {

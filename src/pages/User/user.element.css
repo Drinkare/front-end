@@ -9,11 +9,17 @@
 .userStatisticsContainer{
   
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     width:100%;
     height:400px;
 }
+.userStatisticsTitle{
+    margin:10px;
+
+}
+
 .userStatisticsItem{
     width: 100vw;
     height:200px;

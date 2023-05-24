@@ -51,7 +51,7 @@ const User = () => {
     localStorage.setItem(
       "userData",
       JSON.stringify({
-        id: "dong98",
+        id: 1,
         name: "신동현",
         age: 26,
         email: "shindh98@naver.com",
@@ -59,10 +59,25 @@ const User = () => {
     );
   };
 
+  const getId = async () => {
+    fetch("http://15.165.161.157:8080/api/query/getinfo", {
+      method: "POST",
+      body: JSON.stringify({
+        userId: userData.id,
+      }),
+    })
+      .then((response) => response.json())
+      .then((result) => console.log("결과: ", result));
+  };
+
   useEffect(() => {
     tempLogin();
   }, []);
   //
+  useEffect(() => {
+    if (!userData) return;
+    getId();
+  }, [userData]);
 
   useEffect(() => {
     const getUserData = () => {
@@ -101,10 +116,11 @@ const User = () => {
                 <Tooltip />
                 <Legend />
 
-                <Bar dataKey="drink" barSize={20} fill="#413ea0" />
-                <Line type="monotone" dataKey="drink" stroke="blue" />
+                <Bar dataKey="drink" barSize={20} fill="#92E0EB" />
+                <Bar dataKey="count" barSize={20} fill="#C1B2ED" />
+                {/* <Line type="monotone" dataKey="drink" stroke="blue" /> */}
 
-                <Line type="monotone" dataKey="count" stroke="#ff7300" />
+                {/* <Line type="monotone" dataKey="count" stroke="#ff7300" /> */}
               </ComposedChart>
             </ResponsiveContainer>
           </div>

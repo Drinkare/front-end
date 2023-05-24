@@ -2,9 +2,9 @@ import { useNavigate } from "react-router-dom";
 import Custombutton from "../../component/custombutton/custombutton";
 import "./login.element.css";
 
-import KakaoLogin from "react-kakao-login";
-
 import kakaoLogo from "../../assets/kakao_login_medium_narrow.png";
+import kakaoIcon from "../../assets/KakaoTalk_icon.png";
+
 import React, { useState } from "react";
 import axios from "axios";
 
@@ -23,9 +23,12 @@ const Login = () => {
 
   return (
     <React.Fragment>
-      <button className="loginBtn" onClick={kakaoLogin}>
-        <img src={kakaoLogo} />
-      </button>
+      <div className="kakaoLoginContainer">
+        <img src={kakaoIcon} className="kakaoLogoIcon" />
+        <button className="loginBtn" onClick={kakaoLogin}>
+          <img src={kakaoLogo} />
+        </button>
+      </div>
       {/* 로그인 성공된 담에 ./main화면으로 이동해야힘 */}
     </React.Fragment>
   );

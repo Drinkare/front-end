@@ -5,6 +5,9 @@ import { useEffect, useState } from "react";
 import imgSrc from "../../assets/hong.jpeg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
+import { USER_DATA } from "../../constants/auth";
+import domtoimage from "dom-to-image";
+import { saveAs } from "file-saver";
 
 const AnalyzePage = () => {
   const navigate = useNavigate();
@@ -22,7 +25,7 @@ const AnalyzePage = () => {
   //
   const tempLogin = () => {
     localStorage.setItem(
-      "userData",
+      USER_DATA,
       JSON.stringify({
         id: "dong98",
         name: "신동현",
@@ -33,9 +36,21 @@ const AnalyzePage = () => {
   };
 
   useEffect(() => {
-    tempLogin();
+    //tempLogin();
   }, []);
   //
+
+  const onDownloadBtn = () => {
+    const element = document.querySelector(".analyzeImage");
+    domtoimage
+      .toBlob(element)
+      .then(function (blob) {
+        saveAs(blob, "image.png");
+      })
+      .catch(function (error) {
+        console.error("Error while downloading image:", error);
+      });
+  };
 
   useEffect(() => {
     const getUserData = () => {
@@ -69,8 +84,14 @@ const AnalyzePage = () => {
           <div className="analyzeBtnItem" onClick={() => navigate("/main")}>
             <Custombutton type={1} name={"뒤로가기"} />
           </div>
-          <div className="analyzeBtnItem" onClick={() => navigate("/login")}>
-            <Custombutton type={2} name={"등록하기"} />
+          <div className="analyzeBtnItem" onClick={onDownloadBtn}>
+            {/* 
+            https://velog.io/@chaeri93/React-%ED%8C%8C%EC%9D%BC-%EC%97%85%EB%A1%9C%EB%93%9C-%EB%B0%8F-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C-%EB%B2%84%ED%8A%BC%EC%9C%BC%EB%A1%9C-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0 
+            
+            S3 서버에 올라온 이미지 다운받아오기
+            
+            */}
+            <Custombutton type={2} name={"다운로드"} />
           </div>
         </div>
       </div>

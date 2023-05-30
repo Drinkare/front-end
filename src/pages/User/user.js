@@ -76,7 +76,7 @@ const User = () => {
   //
   useEffect(() => {
     if (!userData) return;
-    getId();
+    //getId();
   }, [userData]);
 
   useEffect(() => {

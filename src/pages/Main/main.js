@@ -3,6 +3,8 @@ import React, { useCallback, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css"; // css import
 import moment from "moment";
+import { Link } from "react-router-dom";
+
 import { InputHTMLAttributes } from "react";
 import "./main.element.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -33,6 +35,7 @@ const Main = () => {
         fileReader.onload = function (event) {
           if (event.target == null) return;
           const fileContent = event.target.result;
+          // console.log(fileContent);
           if (!fileInput.files) console.log(fileContent);
           else {
             //이제 파일이 들어온경우-> 백으로-> ML 알괴고리즘 돌리고-> 그 결과를 DB에 저장?
@@ -44,6 +47,7 @@ const Main = () => {
       });
     }
   }, []);
+
   return (
     <div>
       <div className="mainCalendar">
@@ -59,21 +63,25 @@ const Main = () => {
             if (mark.find((x) => x === moment(date).format("YYYY-MM-DD"))) {
               html.push(<div className="dot"></div>);
             }
-
-            return <div className="dotContainer">{html}</div>;
+            return (
+              //여기서 각 날짜별 analyze 된 링크로 받아올 수 있어야함
+              <a href="/analyze" className="dotContainer">
+                {html}
+              </a>
+            );
           }}
         />
       </div>
 
       <div className="navigatorBar">
-        <div>
+        <a href="/">
           <FontAwesomeIcon
             icon={faCalendar}
             size="2x"
             color="white"
             className="iconContent"
           />
-        </div>
+        </a>
         <div onClick={() => handleCameraClick1()}>
           <FontAwesomeIcon
             icon={faCamera}

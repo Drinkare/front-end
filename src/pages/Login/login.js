@@ -24,7 +24,7 @@ const Login = () => {
   return (
     <React.Fragment>
       <div className="kakaoLoginContainer">
-        <img src={kakaoIcon} className="kakaoLogoIcon" />
+        {/* <img src={kakaoIcon} className="kakaoLogoIcon" /> */}
         <button className="loginBtn" onClick={kakaoLogin}>
           <img src={kakaoLogo} />
         </button>

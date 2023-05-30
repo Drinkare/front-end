@@ -39,9 +39,6 @@ const Loader = () => {
           1분 이내로 완료되니 조금만 기다려주세요.
         </div>
       </div>
-      <div onClick={() => navigate("/login")}>
-        <Custombutton type={2} name={"로그인"} />
-      </div>
     </div>
   );
 };

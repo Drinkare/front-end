@@ -35,7 +35,7 @@ const Main = () => {
         fileReader.onload = function (event) {
           if (event.target == null) return;
           const fileContent = event.target.result;
-          // console.log(fileContent);
+          console.log(fileContent);
           if (!fileInput.files) console.log(fileContent);
           else {
             //이제 파일이 들어온경우-> 백으로-> ML 알괴고리즘 돌리고-> 그 결과를 DB에 저장?
@@ -60,12 +60,17 @@ const Main = () => {
           tileContent={({ date, view }) => {
             let html = [];
             // 현재 날짜가 post 작성한 날짜 배열(mark)에 있다면, dot div 추가
-            if (mark.find((x) => x === moment(date).format("YYYY-MM-DD"))) {
+            const formattedDate = moment(date).format("YYYY-MM-DD");
+
+            if (mark.find((x) => x === formattedDate)) {
               html.push(<div className="dot"></div>);
             }
             return (
               //여기서 각 날짜별 analyze 된 링크로 받아올 수 있어야함
-              <a href="/analyze" className="dotContainer">
+              <a
+                href={`/analyze?date=${formattedDate}`}
+                className="dotContainer"
+              >
                 {html}
               </a>
             );

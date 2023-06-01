@@ -9,7 +9,7 @@ import Login from "./pages/Login/login";
 import { USER_DATA } from "./constants/auth";
 
 function App() {
-  const [userData] = useState(localStorage.getItem(USER_DATA));
+  const [userData] = useState(JSON.parse(localStorage.getItem(USER_DATA)));
 
   return (
     <div>
@@ -18,7 +18,7 @@ function App() {
         <Routes>
           <Route path="/" element={userData ? <Main /> : <Login />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/user" element={<User />} />
+          <Route path="/user" element={<User userData={userData} />} />
           <Route path="/main" element={<Main />} />
           <Route path="/loading" element={<Loader />} />
           <Route path="/analyze" element={<AnalyzePage />} />

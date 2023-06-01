@@ -4,6 +4,7 @@ import "./login.element.css";
 
 import kakaoLogo from "../../assets/kakao_login_medium_narrow.png";
 import kakaoIcon from "../../assets/KakaoTalk_icon.png";
+import drinkareIcon from "../../assets/drinkare_logo.jpg";
 
 import React, { useState } from "react";
 import axios from "axios";
@@ -25,6 +26,9 @@ const Login = () => {
     <React.Fragment>
       <div className="kakaoLoginContainer">
         {/* <img src={kakaoIcon} className="kakaoLogoIcon" /> */}
+        {/* <div>
+          <img src={drinkareIcon} />
+        </div> */}
         <button className="loginBtn" onClick={kakaoLogin}>
           <img src={kakaoLogo} />
         </button>

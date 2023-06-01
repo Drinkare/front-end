@@ -2,14 +2,11 @@ import { useNavigate } from "react-router-dom";
 import Custombutton from "../../component/custombutton/custombutton";
 import "./user.element.css";
 import { useEffect, useState } from "react";
-import imgSrc from "../../assets/hong.jpeg";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { PureComponent } from "react";
+import React from "react";
 import {
   ComposedChart,
-  Line,
-  Area,
   Bar,
+  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -19,82 +16,41 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const User = () => {
+const User = ({ userData }) => {
   const navigate = useNavigate();
-  const [userData, setUserData] = useState(null);
+  const [username, setUsername] = useState("");
+  const [dataList, setDataList] = useState([]);
 
-  const dummyData = [
-    {
-      date: "2023-02",
-      drink: 13,
-      count: 14,
-    },
-    {
-      date: "2023-03",
-      drink: 35,
-      count: 20,
-    },
-    {
-      date: "2023-04",
-      drink: 17,
-      count: 10,
-    },
-    {
-      date: "2023-05",
-      drink: 42,
-      count: 24,
-    },
-  ];
+  useEffect(() => {
+    if (userData === null) {
+      return;
+    }
 
-  //
-  const tempLogin = () => {
-    localStorage.setItem(
-      "userData",
-      JSON.stringify({
-        id: 1,
-        name: "신동현",
-        age: 26,
-        email: "shindh98@naver.com",
+    const getId = async () => {
+      fetch("http://15.165.161.157:8080/api/query/getinfo", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: userData.id,
+        }),
       })
-    );
-  };
-
-  const getId = async () => {
-    fetch("http://15.165.161.157:8080/api/query/getinfo", {
-      method: "POST",
-      body: JSON.stringify({
-        userId: userData.id,
-      }),
-    })
-      .then((response) => response.json())
-      .then((result) => console.log("결과: ", result));
-  };
-
-  useEffect(() => {
-    tempLogin();
-  }, []);
-  //
-  useEffect(() => {
-    if (!userData) return;
-    getId();
-  }, [userData]);
-
-  useEffect(() => {
-    const getUserData = () => {
-      setUserData(JSON.parse(localStorage.getItem("userData")));
+        .then((response) => response.json())
+        .then((result) => {
+          setUsername(result.name);
+          setDataList(result.list);
+        });
     };
-    getUserData();
-  }, []);
 
-  useEffect(() => {
-    console.log(userData);
-  }, [userData]);
+    getId();
+  }, []);
 
   return (
     userData && (
       <div className="userContainer">
         <div className="userTitle">
-          안녕하세요 <b>{userData.name}</b>님!
+          안녕하세요 <b>{username}</b>님!
         </div>
         <div className="userStatisticsContainer">
           <div className="userStatisticsItem">
@@ -102,7 +58,7 @@ const User = () => {
               <ComposedChart
                 width={500}
                 height={400}
-                data={dummyData}
+                data={dataList}
                 margin={{
                   top: 20,
                   right: 20,
@@ -111,14 +67,16 @@ const User = () => {
                 }}
               >
                 <CartesianGrid stroke="#f5f5f5" />
-                <XAxis dataKey="date" scale="band" />
+                <XAxis dataKey="month" scale="band" />
                 <YAxis />
                 <Tooltip />
                 <Legend />
 
-                <Bar dataKey="drink" barSize={20} fill="#92E0EB" />
-                <Bar dataKey="count" barSize={20} fill="#C1B2ED" />
-                {/* <Line type="monotone" dataKey="drink" stroke="blue" /> */}
+                <Bar dataKey="soju" barSize={20} fill="#92E0EB" />
+                <Bar dataKey="beer" barSize={20} fill="#C1B2ED" />
+                <Bar dataKey="count" barSize={20} fill="#A1D2FF" />
+
+                <Line type="monotone" dataKey="count" stroke="blue" />
 
                 {/* <Line type="monotone" dataKey="count" stroke="#ff7300" /> */}
               </ComposedChart>

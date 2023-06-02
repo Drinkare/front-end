@@ -20,6 +20,106 @@ const Main = () => {
   const [value, onChange] = useState(new Date());
   const navigate = useNavigate();
 
+  const uploadImage = async (imageFile) => {
+    const formData = new FormData();
+    formData.append("image", imageFile);
+
+    try {
+      const response = await fetch("http://3.26.39.50:8000/upload_image", {
+        method: "POST",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        body: formData,
+      });
+
+      if (response.ok) {
+        // 이미지 업로드 성공
+        console.log("이미지 업로드 성공");
+        // 응답 처리
+        // ...
+      } else {
+        console.error("이미지 업로드 실패");
+      }
+    } catch (error) {
+      console.error("이미지 업로드 실패:", error);
+    }
+  };
+
+  // const handleCameraClick1 = useCallback(() => {
+  //   let fileId = Date.now();
+  //   let fileInput = document.createElement("input");
+  //   fileInput.type = "file";
+  //   fileInput.accept = "image/*";
+  //   fileInput.click();
+
+  //   if (fileInput !== null) {
+  //     fileInput.addEventListener("change", () => {
+  //       if (fileInput.files == null) return;
+
+  //       const file = fileInput.files[0];
+  //       const formData = new FormData();
+  //       formData.append("image", file, file.name);
+  //       console.log(formData);
+  //       fetch("http://3.26.39.50:8000/upload_image", {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "multipart/form-data", // 수정된 부분
+  //         },
+  //         body: formData,
+  //       })
+  //         .then((response) => {
+  //           if (response.ok) {
+  //             console.log("파일 업로드 성공");
+  //           } else {
+  //             console.error("파일 업로드 실패");
+  //           }
+  //         })
+  //         .then((result) => {
+  //           console.log(result);
+  //         })
+  //         .catch((error) => {
+  //           console.error("파일 업로드 실패:", error);
+  //         });
+  //     });
+  //   }
+  // }, []);
+
+  // const handleCameraClick1 = useCallback(() => {
+  //   let fileId = Date.now();
+  //   let fileInput = document.createElement("input");
+  //   fileInput.type = "file";
+  //   fileInput.accept = "image/*";
+  //   fileInput.click();
+
+  //   if (fileInput !== null) {
+  //     fileInput.addEventListener("change", () => {
+  //       if (fileInput.files == null) return;
+
+  //       const file = fileInput.files[0];
+  //       const formData = new FormData();
+  //       formData.append("image", file, file.name);
+
+  //       fetch("http://3.26.39.50:8000/upload_image", {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "multipart/form-data", // 수정된 부분
+  //         },
+  //         body: formData,
+  //       })
+  //         .then((response) => response)
+  //         .then((result) => {
+  //           // 파일 업로드 성공 후 처리
+  //           console.log(result);
+  //         })
+  //         .catch((error) => {
+  //           // 파일 업로드 실패 처리
+  //           console.error("파일 업로드 실패:", error);
+  //         });
+  //     });
+  //   }
+  // }, []);
+
   const handleCameraClick1 = useCallback(() => {
     let fileId = Date.now();
     let fileInput = document.createElement("input"); // document 아래 input 태그 생성 - type input
@@ -38,6 +138,30 @@ const Main = () => {
           console.log(fileContent);
           if (!fileInput.files) console.log(fileContent);
           else {
+            console.log(typeof fileContent);
+            uploadImage(fileContent);
+
+            fetch("http://3.26.39.50:8000/upload_image", {
+              method: "POST",
+              headers: {
+                "Content-Type": "multipart/form-data", // 수정된 부분
+              },
+              body: { file: fileContent },
+            })
+              .then((response) => {
+                if (response.ok) {
+                  console.log("파일 업로드 성공");
+                } else {
+                  console.error("파일 업로드 실패");
+                }
+              })
+              .then((result) => {
+                console.log(result);
+              })
+              .catch((error) => {
+                console.error("파일 업로드 실패:", error);
+              });
+
             //이제 파일이 들어온경우-> 백으로-> ML 알괴고리즘 돌리고-> 그 결과를 DB에 저장?
             //백에서 json 데이터 읽어와서?
             //ML이 데이터 변환해서 프론트한테 보내주면

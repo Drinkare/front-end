@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import Custombutton from "../../component/custombutton/custombutton";
 import "./login.element.css";
-
+import { useEffect } from "react";
 import kakaoLogo from "../../assets/kakao_login_medium_narrow.png";
 import kakaoIcon from "../../assets/KakaoTalk_icon.png";
 import drinkareIcon from "../../assets/drinkare_logo.jpg";
@@ -17,18 +17,19 @@ const Login = () => {
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
   // const KAKAO_AUTH_URL = `https://kauth.kakao.com/login/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-
   const kakaoLogin = () => {
     window.location.href = KAKAO_AUTH_URL;
   };
+  const href = window.location.href;
+  let params = new URL(window.location.href);
+  let code = params.get("code");
+  React.useEffect(async () => {
+    //
+  }, []);
 
   return (
     <React.Fragment>
       <div className="kakaoLoginContainer">
-        {/* <img src={kakaoIcon} className="kakaoLogoIcon" /> */}
-        {/* <div>
-          <img src={drinkareIcon} />
-        </div> */}
         <button className="loginBtn" onClick={kakaoLogin}>
           <img src={kakaoLogo} />
         </button>

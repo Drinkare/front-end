@@ -52,6 +52,9 @@ const User = ({ userData }) => {
         <div className="userTitle">
           안녕하세요 <b>{username}</b>님!
         </div>
+        <div className="subTitle">
+          <b>2023</b>년 월별 술자리 분석
+        </div>
         <div className="userStatisticsContainer">
           <div className="userStatisticsItem">
             <ResponsiveContainer width="100%" height="100%">

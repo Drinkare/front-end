@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import Custombutton from "../../component/custombutton/custombutton";
 import "./analyze.element.css";
 import { useEffect, useState } from "react";
-import imgSrc from "../../assets/hong.jpeg";
+import imgSrc from "../../assets/analyzedPhoto.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { USER_DATA } from "../../constants/auth";
@@ -110,9 +110,9 @@ const AnalyzePage = () => {
         name: "hong",
         list: [
           {
-            people: 2,
-            soju: 3,
-            beer: 5,
+            people: 3,
+            soju: 4,
+            beer: 0,
           },
           {
             people: 2,

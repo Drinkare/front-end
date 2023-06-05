@@ -8,8 +8,10 @@ import drinkareIcon from "../../assets/drinkare_logo.jpg";
 
 import React, { useState } from "react";
 import axios from "axios";
+import { USER_DATA } from "../../constants/auth";
 
 const Login = () => {
+  const navigate = useNavigate();
   // 카카오 로그인 함수를 실행시키면 아래에 설정해 놓은 KAKAO_AUTH_URL 주소로 이동한다.
   // 이동 된 창에서 kakao 계정 로그인을 시도할 수 있으며 로그인 버튼 클릭 시 Redirect URI로 이동하면서 빈 화면과 함게 인가코드가 발급된다.(인가코드는 파라미터 값에 들어가 있다!)
   const REST_API_KEY = "532d7168dd0821f3756ea1293ba8dea4";
@@ -20,11 +22,30 @@ const Login = () => {
   const kakaoLogin = () => {
     window.location.href = KAKAO_AUTH_URL;
   };
-  const href = window.location.href;
-  let params = new URL(window.location.href);
+
+  const href = new URL(window.location.href);
+  let params = new URL(document.URL).searchParams;
   let code = params.get("code");
-  React.useEffect(async () => {
-    //
+
+  useEffect(() => {
+    if (code) {
+      console.log("code:", code);
+      console.log("exists");
+      fetch(`http://15.165.161.157:8080/login/kakao?code=${code}`, {
+        method: "GET",
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          console.log("result", result);
+          localStorage.setItem(USER_DATA, JSON.stringify(result));
+          navigate("/main");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      console.log("no");
+    }
   }, []);
 
   return (

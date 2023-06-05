@@ -19,7 +19,7 @@ import { useLocation } from "react-router-dom";
 // soju
 // people
 
-const AnalyzePage = () => {
+const AnalyzePage = ({ userData }) => {
   const [dateInfo, setDateInfo] = useState({
     year: 0,
     month: 0,
@@ -27,9 +27,8 @@ const AnalyzePage = () => {
   });
 
   const [username, setUsername] = useState("");
-
-  const [data, setData] = useState({
-    imgUrl: "",
+  const [dataList, setDataList] = useState({
+    image: "",
     beer: 0,
     soju: 0,
     people: 0,
@@ -40,30 +39,25 @@ const AnalyzePage = () => {
   const year = now.getFullYear(); // 연도 가져오기 (네 자리 숫자로 반환)
   const month = now.getMonth() + 1; // 월 가져오기 (0부터 시작하므로 1을 더해줌)
   const day = now.getDate(); // 일 가져오기
-  const [userData, setUserData] = useState(null);
+  // const [userData, setUserData] = useState(null);
   const location = useLocation();
 
-  const dummyData = {
-    people: 2,
-    soju: 3,
-    beer: 5,
-  };
-  //
-  const tempLogin = () => {
-    localStorage.setItem(
-      USER_DATA,
-      JSON.stringify({
-        id: "dong98",
-        name: "신동현",
-        age: 26,
-        email: "shindh98@naver.com",
-      })
-    );
-  };
+  // //
+  // const tempLogin = () => {
+  //   localStorage.setItem(
+  //     USER_DATA,
+  //     JSON.stringify({
+  //       id: "dong98",
+  //       name: "신동현",
+  //       age: 26,
+  //       email: "shindh98@naver.com",
+  //     })
+  //   );
+  // };
 
-  useEffect(() => {
-    //tempLogin();
-  }, []);
+  // useEffect(() => {
+  //   //tempLogin();
+  // }, []);
 
   const onDownloadBtn = () => {
     const element = document.querySelector(".analyzeImage");
@@ -81,6 +75,11 @@ const AnalyzePage = () => {
     const searchParams = new URLSearchParams(location.search);
     const analyzedate = searchParams.get("date");
 
+    if (!analyzedate) {
+      navigate("/main");
+      return;
+    }
+
     const [year, month, day] = analyzedate.split("-");
     setDateInfo({
       year,
@@ -88,75 +87,64 @@ const AnalyzePage = () => {
       day,
     });
 
-    const getUserData = () => {
-      setUserData(JSON.parse(localStorage.getItem("userData")));
-    };
-
-    // const getDetail = () => {
-    //   fetch("http://15.165.161.157:8080/api/query/getdetail", {
-    //     method: "POST",
-    //     body: JSON.stringify({
-    //       userId: localUserId,
-    //       date: analyzedate,
-    //     }),
-    //   })
-    //     .then((response) => response.json())
-    //     .then((result) => {
-    //       return result;
-    //     });
+    // const getUserData = () => {
+    //   setUserData(JSON.parse(localStorage.getItem("userData")));
     // };
-    const getDetail = async () => {
-      return {
-        name: "hong",
-        list: [
-          {
-            people: 3,
-            soju: 4,
-            beer: 0,
-          },
-          {
-            people: 2,
-            soju: 3,
-            beer: 5,
-          },
-          {
-            people: 3,
-            soju: 5,
-            beer: 2,
-          },
-          {
-            people: 3,
-            soju: 5,
-            beer: 2,
-          },
-        ],
-      };
+
+    const getDetail = () => {
+      fetch("http://15.165.161.157:8080/api/query/getdetail", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: localUserId,
+          date: analyzedate,
+        }),
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          console.log("result:", result);
+          console.log("list:", result.list[0]);
+          setDataList(result.list[0]);
+          setUsername(result.name);
+          // return result;
+        });
     };
 
     const onInit = async () => {
-      const data = await getDetail();
-
-      setData(data.list[0]);
-      setUsername(data.name);
+      // const data = await getDetail();
+      // console.log("data:", data);
+      // if (data && data.list && data.list.length > 0) {
+      //   console.log("dddd");
+      //   setData(data.list[0]);
+      //   setUsername(data.name);
+      //   console.log("data2:", data);
+      // }
+      // setData(data.list[0]);
+      // setUsername(data.name);
     };
-    //c;
 
-    console.log(location);
+    // console.log(location);
     console.log("anlyzedate:", analyzedate);
 
     // userId -> localStorage에서 가져오기
 
     const localUserId = JSON.parse(localStorage.getItem(USER_DATA)).id;
     console.log("localUserId:", localUserId);
-
-    getUserData();
-    onInit();
+    getDetail();
+    // getUserData();
+    // onInit();
   }, []);
 
-  useEffect(() => {
-    console.log(userData);
-  }, [userData]);
+  // useEffect(() => {
+  //   console.log("userdata: ", userData);
+  // }, [userData]);
 
+  // useEffect(() => {
+  //   setDataList(data.list[0]);
+  //   setUsername(data.name);
+  // }, [data]);
   // useLocation? query parameter 가져오는 라이브러리
 
   // date, userId 로 post 요청 보내기
@@ -164,17 +152,17 @@ const AnalyzePage = () => {
   return (
     userData && (
       <div className="analyzeContainer">
-        <img src={imgSrc} width="200px" className="analyzeImage" />
+        <img src={dataList.image} width="200px" className="analyzeImage" />
         {/* <img src={data.imgUrl} width="200px" className="analyzeImage" /> */}
         <div className="analyzeTextContainer">
           <div className="analyzeTextContent">
             {dateInfo.year}년 {dateInfo.month}월 {dateInfo.day}일
           </div>
           <div className="analyzeTextContent">
-            <b>{username}</b>님 총 <b>{data.people}</b>명과 함께 하셨군요
+            <b>{username}</b>님 총 <b>{dataList.people}</b>명과 함께 하셨군요
           </div>
           <div className="analyzeTextContent">
-            맥주 🍻 <b>{data.beer}</b> 병, 소주 🍾 <b>{data.soju}</b>
+            맥주 🍻 <b>{dataList.beer}</b> 병, 소주 🍾 <b>{dataList.soju}</b>
             병을 마셨습니다
           </div>
         </div>

@@ -3,13 +3,6 @@ import Custombutton from "../../component/custombutton/custombutton";
 import "./loader.element.css";
 import { useEffect } from "react";
 const Loader = () => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    setTimeout(() => {
-      navigate("/analyze");
-    }, 5000);
-  }, []);
   return (
     <div className="loaderDiv">
       <div

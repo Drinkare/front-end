@@ -28,6 +28,11 @@
     display:flex;
     justify-content:space-between;
 }
+.navigatorBar > div {
+  flex-basis: 33%;
+  display: flex;
+  justify-content: center;
+}
 
 
 .iconContent{

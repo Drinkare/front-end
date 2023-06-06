@@ -5,7 +5,7 @@ import "react-calendar/dist/Calendar.css"; // css import
 import moment from "moment";
 import { Link } from "react-router-dom";
 import Loader from "../Loader/loader";
-
+import { USER_DATA } from "../../constants/auth";
 import { InputHTMLAttributes } from "react";
 import "./main.element.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,6 +14,21 @@ import {
   faCalendar,
   faCamera,
 } from "@fortawesome/free-solid-svg-icons";
+import { atob } from "js-base64";
+
+function DataURIToBlob(dataURI) {
+  const splitDataURI = dataURI.split(",");
+  const byteString =
+    splitDataURI[0].indexOf("base64") >= 0
+      ? atob(splitDataURI[1])
+      : decodeURI(splitDataURI[1]);
+  const mimeString = splitDataURI[0].split(":")[1].split(";")[0];
+
+  const ia = new Uint8Array(byteString.length);
+  for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
+
+  return new Blob([ia], { type: mimeString });
+}
 
 const Main = ({ userData }) => {
   const [value, onChange] = useState(new Date());
@@ -28,7 +43,9 @@ const Main = ({ userData }) => {
   const month = now.getMonth() + 1; // 월 가져오기 (0부터 시작하므로 1을 더해줌)
   const day = now.getDate(); // 일 가져오기
   const todayDate = year + "-" + month + "-" + day;
+
   const [calendarList, setCalendarList] = useState([]);
+  const localUserId = JSON.parse(localStorage.getItem(USER_DATA)).id;
 
   const handleCameraClick1 = useCallback(() => {
     let fileId = Date.now();
@@ -63,29 +80,41 @@ const Main = ({ userData }) => {
             img.src = "data:image/jpeg;base64," + data.image;
 
             dictdata = data.data;
-            console.log("dict data", dictdata, dictdata.person);
+            console.log(
+              "dict data:",
+              dictdata.person,
+              dictdata.soju,
+              dictdata.beer,
+              todayDate
+            );
             setImgsrc("data:image/jpeg;base64," + data.image);
 
+            ////////////
+            console.log();
             // 여기서 받아온 정보를 DB로 보내야함
+            const formData2 = new FormData();
 
-            // 받은 이미지, 정보들 보내주기
-            // fetch("http://15.165.161.157:8080/api/command/save", {
-            //   method: "POST",
+            const json = JSON.stringify({
+              userId: localUserId,
+              people: dictdata.person,
+              soju: dictdata.soju,
+              beer: dictdata.beer,
+              date: todayDate,
+            });
 
-            //   body: JSON.stringify({
-            //     userId: userData.id,
-            //     people: dictdata.person,
-            //     soju: dictdata.soju,
-            //     beer: dictdata.beer,
-            //     date: todayDate,
-            //     images: imgsrc,
-            //   }),
-            // })
-            //   .then((response) => response.json())
-            //   .then((result) => {})
-            //   .catch((error) => console.error("Error:", error));
+            const blob = new Blob([json], { type: "application/json" });
+            formData2.append("data", blob);
+            const file = DataURIToBlob("data:image/jpeg;base64," + data.image);
+            formData2.append("images", file);
 
-            // document.body.appendChild(analyzedImage); // or wherever you want to put the image
+            fetch("http://15.165.161.157:8080/api/command/save", {
+              method: "POST",
+              body: formData2,
+            })
+              .then((response) => {
+                console.log("DB save done");
+              })
+              .catch((error) => console.error("Error:", error));
           })
           .catch((error) => console.error("Error:", error)); //ml 서버 처리 에러 메시지
       });

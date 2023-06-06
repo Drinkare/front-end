@@ -92,7 +92,7 @@ const AnalyzePage = ({ userData }) => {
     };
 
     const onInit = async () => {
-      // const data = await getDetail();
+      await getDetail();
       // console.log("data:", data);
       // if (data && data.list && data.list.length > 0) {
       //   console.log("dddd");
@@ -108,9 +108,9 @@ const AnalyzePage = ({ userData }) => {
     console.log(location);
     console.log("anlyzedate:", analyzedate);
 
-    getDetail();
+    //getDetail();
 
-    // onInit();
+    onInit();
   }, [userData]);
 
   // useEffect(() => {

@@ -10,7 +10,7 @@ const Header = () => {
 
   return (
     <div className="headerContainer">
-      <a href="/" className="headerMaintext">
+      <a href="/main" className="headerMaintext">
         Drinkare 음주일정관리
       </a>
       <div className="headerSubtext">{title}</div>

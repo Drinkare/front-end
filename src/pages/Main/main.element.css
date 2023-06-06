@@ -1,5 +1,5 @@
 .mainCalendar{
-    height: 50vh;
+    height: 33vh;
     padding:20px;
 }
 .dotContainer{
@@ -38,4 +38,11 @@
 .iconContent{
   margin:10px;
   flex-basis:33%;
+}
+.analyzedImage{
+  width: 100vw;
+    height: 38vh;
+    object-fit: cover;
+    display: flex;
+    justify-content: center;
 }

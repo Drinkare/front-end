@@ -35,29 +35,7 @@ const AnalyzePage = ({ userData }) => {
   });
 
   const navigate = useNavigate();
-  const now = new Date();
-  const year = now.getFullYear(); // 연도 가져오기 (네 자리 숫자로 반환)
-  const month = now.getMonth() + 1; // 월 가져오기 (0부터 시작하므로 1을 더해줌)
-  const day = now.getDate(); // 일 가져오기
-  // const [userData, setUserData] = useState(null);
   const location = useLocation();
-
-  // //
-  // const tempLogin = () => {
-  //   localStorage.setItem(
-  //     USER_DATA,
-  //     JSON.stringify({
-  //       id: "dong98",
-  //       name: "신동현",
-  //       age: 26,
-  //       email: "shindh98@naver.com",
-  //     })
-  //   );
-  // };
-
-  // useEffect(() => {
-  //   //tempLogin();
-  // }, []);
 
   const onDownloadBtn = () => {
     const element = document.querySelector(".analyzeImage");
@@ -73,11 +51,15 @@ const AnalyzePage = ({ userData }) => {
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    const analyzedate = searchParams.get("date");
+    let analyzedate = searchParams.get("date");
 
     if (!analyzedate) {
-      navigate("/main");
-      return;
+      const now = new Date();
+      const year = now.getFullYear(); // 연도 가져오기 (네 자리 숫자로 반환)
+      const month = now.getMonth() + 1; // 월 가져오기 (0부터 시작하므로 1을 더해줌)
+      const day = now.getDate(); // 일 가져오기
+      analyzedate = year + "-" + month + "-" + day;
+      console.log(analyzedate);
     }
 
     const [year, month, day] = analyzedate.split("-");
@@ -87,10 +69,7 @@ const AnalyzePage = ({ userData }) => {
       day,
     });
 
-    // const getUserData = () => {
-    //   setUserData(JSON.parse(localStorage.getItem("userData")));
-    // };
-
+    // date, userId 로 post 요청 보내기
     const getDetail = () => {
       fetch("http://15.165.161.157:8080/api/query/getdetail", {
         method: "POST",
@@ -99,6 +78,7 @@ const AnalyzePage = ({ userData }) => {
         },
         body: JSON.stringify({
           userId: localUserId,
+          // userId: userData.id,
           date: analyzedate,
         }),
       })
@@ -108,7 +88,6 @@ const AnalyzePage = ({ userData }) => {
           console.log("list:", result.list[0]);
           setDataList(result.list[0]);
           setUsername(result.name);
-          // return result;
         });
     };
 
@@ -125,29 +104,20 @@ const AnalyzePage = ({ userData }) => {
       // setUsername(data.name);
     };
 
-    // console.log(location);
+    const localUserId = JSON.parse(localStorage.getItem(USER_DATA)).id;
+    console.log(location);
     console.log("anlyzedate:", analyzedate);
 
-    // userId -> localStorage에서 가져오기
-
-    const localUserId = JSON.parse(localStorage.getItem(USER_DATA)).id;
-    console.log("localUserId:", localUserId);
     getDetail();
-    // getUserData();
-    // onInit();
-  }, []);
 
-  // useEffect(() => {
-  //   console.log("userdata: ", userData);
-  // }, [userData]);
+    // onInit();
+  }, [userData]);
 
   // useEffect(() => {
   //   setDataList(data.list[0]);
   //   setUsername(data.name);
   // }, [data]);
   // useLocation? query parameter 가져오는 라이브러리
-
-  // date, userId 로 post 요청 보내기
 
   return (
     userData && (

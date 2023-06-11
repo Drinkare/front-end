@@ -2,7 +2,8 @@ import { useNavigate } from "react-router-dom";
 import Custombutton from "../../component/custombutton/custombutton";
 import "./user.element.css";
 import { useEffect, useState } from "react";
-import React from "react";
+import React, { PureComponent } from "react";
+
 import {
   ComposedChart,
   Bar,
@@ -14,6 +15,11 @@ import {
   Legend,
   Scatter,
   ResponsiveContainer,
+  PieChart,
+  Pie,
+  Sector,
+  Cell,
+  LabelList,
 } from "recharts";
 
 const User = ({ userData }) => {
@@ -48,19 +54,10 @@ const User = ({ userData }) => {
   const formatDate = (month) => {
     const now = new Date();
     const year = now.getFullYear();
-    return `${year}-${month}`;
-  };
-
-  const getCustomLabel = (label) => {
-    if (label === "soju") {
-      return "소주";
-    } else if (label === "beer") {
-      return "맥주";
-    } else if (label === "count") {
-      return "술자리 횟수";
-    }
-
-    return label;
+    if (month < 10) {
+      // return `${year}-0${month}`;
+      return `0${month}월`;
+    } else return `${month}월`;
   };
 
   return (
@@ -70,7 +67,7 @@ const User = ({ userData }) => {
           안녕하세요 <b>{username}</b>님!
         </div>
         <div className="subTitle">
-          <b>2023</b>년 월별 술자리 분석
+          <b>2023</b>년 월별 술 🍺 종류🍾 통계
         </div>
         <div className="userStatisticsContainer">
           <div className="userStatisticsItem">
@@ -92,20 +89,92 @@ const User = ({ userData }) => {
                   scale="band"
                   tickFormatter={formatDate}
                   tick={{ fontSize: 12 }}
+                  interval={0}
                 />
                 <YAxis tick={{ fontSize: 12 }} />
                 <Tooltip />
-                <Legend tickFormatter={getCustomLabel} />
+                <Legend
+                  formatter={(value, entry) => {
+                    if (value === "soju") {
+                      return "소주";
+                    } else if (value === "beer") {
+                      return "맥주";
+                    }
+                  }}
+                />
+                <Bar dataKey="soju" barSize={20} fill="#17681b">
+                  <LabelList dataKey="soju" position="top" />
+                </Bar>
 
-                <Bar dataKey="soju" barSize={20} fill="#92E0EB" />
-                <Bar dataKey="beer" barSize={20} fill="#C1B2ED" />
-                <Bar dataKey="count" barSize={20} fill="#A1D2FF" />
+                <Bar dataKey="beer" barSize={20} fill="#a94305">
+                  <LabelList dataKey="beer" position="top" />
+                </Bar>
 
                 {/* <Line type="monotone" dataKey="count" stroke="#A1D2FF" /> */}
 
                 {/* <Line type="monotone" dataKey="count" stroke="#ff7300" /> */}
               </ComposedChart>
             </ResponsiveContainer>
+            <div className="subTitle">
+              <b>2023</b>년 월별 술자리 횟수 📈
+            </div>
+            <ResponsiveContainer width="100%" height="100%">
+              <ComposedChart
+                width={500}
+                height={400}
+                data={dataList}
+                margin={{
+                  top: 20,
+                  right: 20,
+                  bottom: 20,
+                  left: 20,
+                }}
+              >
+                <CartesianGrid stroke="#f5f5f5" />
+                <XAxis
+                  dataKey="month"
+                  scale="band"
+                  tickFormatter={formatDate}
+                  tick={{ fontSize: 12 }}
+                  interval={0}
+                />
+                <YAxis tick={{ fontSize: 12 }} />
+                <Tooltip />
+                {/* <Legend
+                  formatter={(value, entry) => {
+                    if (value === "count") {
+                      return "술자리 횟수";
+                    }
+                  }}
+                /> */}
+
+                <Bar dataKey="count" barSize={20}>
+                  {dataList.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={entry.count >= 15 ? "#FF0000" : "#3D55AB"}
+                    />
+                  ))}
+                  <LabelList dataKey="count" position="top" />
+                </Bar>
+
+                {/* <Line type="monotone" dataKey="count" stroke="#ff7300" /> */}
+              </ComposedChart>
+            </ResponsiveContainer>
+            {/* <ResponsiveContainer width="100%" height="100%">
+              <PieChart width={400} height={400}>
+                <Pie
+                  data={dataList}
+                  dataKey="soju"
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={70}
+                  outerRadius={90}
+                  fill="#82ca9d"
+                  label
+                />
+              </PieChart>
+            </ResponsiveContainer> */}
           </div>
         </div>
 

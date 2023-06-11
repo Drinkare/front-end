@@ -24,6 +24,7 @@ const AnalyzePage = ({ userData }) => {
     soju: 0,
     people: 0,
   });
+  const [imageError, setImageError] = useState(false); // New state to track image loading error
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -104,11 +105,20 @@ const AnalyzePage = ({ userData }) => {
 
     onInit();
   }, [userData]);
-
+  const handleImageError = () => {
+    // Event handler for image loading error
+    setImageError(true);
+  };
   return (
     userData && (
       <div className="analyzeContainer">
-        <img src={dataList.image} width="200px" className="analyzeImage" />
+        <img
+          src={dataList.image}
+          width="200px"
+          className="analyzeImage"
+          // onError={handleImageError} // Event handler to handle image loading error
+        />
+
         {/* <img src={data.imgUrl} width="200px" className="analyzeImage" /> */}
         <div className="analyzeTextContainer">
           <div className="analyzeTextContent">

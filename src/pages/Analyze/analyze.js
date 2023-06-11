@@ -10,15 +10,6 @@ import domtoimage from "dom-to-image";
 import { saveAs } from "file-saver";
 import { useLocation } from "react-router-dom";
 
-// year, month, date
-
-// username
-
-// imgUrl
-// beer
-// soju
-// people
-
 const AnalyzePage = ({ userData }) => {
   const [dateInfo, setDateInfo] = useState({
     year: 0,
@@ -38,14 +29,15 @@ const AnalyzePage = ({ userData }) => {
   const location = useLocation();
 
   const onDownloadBtn = () => {
-    const element = document.querySelector(".analyzeImage");
-    domtoimage
-      .toBlob(element)
-      .then(function (blob) {
-        saveAs(blob, "image.png");
+    const imageUrl = dataList.image;
+    console.log("image Url: ", imageUrl);
+    fetch(imageUrl)
+      .then((res) => res.blob())
+      .then((blob) => {
+        saveAs(blob, "myItem{analyzedDate}.jpeg");
       })
-      .catch(function (error) {
-        console.error("Error while downloading image:", error);
+      .catch((err) => {
+        console.error("Error downloading image:", err);
       });
   };
 
@@ -113,12 +105,6 @@ const AnalyzePage = ({ userData }) => {
     onInit();
   }, [userData]);
 
-  // useEffect(() => {
-  //   setDataList(data.list[0]);
-  //   setUsername(data.name);
-  // }, [data]);
-  // useLocation? query parameter 가져오는 라이브러리
-
   return (
     userData && (
       <div className="analyzeContainer">
@@ -141,12 +127,6 @@ const AnalyzePage = ({ userData }) => {
             <Custombutton type={1} name={"뒤로가기"} />
           </div>
           <div className="analyzeBtnItem" onClick={onDownloadBtn}>
-            {/* 
-            https://velog.io/@chaeri93/React-%ED%8C%8C%EC%9D%BC-%EC%97%85%EB%A1%9C%EB%93%9C-%EB%B0%8F-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C-%EB%B2%84%ED%8A%BC%EC%9C%BC%EB%A1%9C-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0 
-            
-            S3 서버에 올라온 이미지 다운받아오기
-            
-            */}
             <Custombutton type={2} name={"다운로드"} />
           </div>
         </div>

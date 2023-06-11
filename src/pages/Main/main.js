@@ -15,6 +15,8 @@ import {
   faCamera,
 } from "@fortawesome/free-solid-svg-icons";
 import { atob } from "js-base64";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 function DataURIToBlob(dataURI) {
   const splitDataURI = dataURI.split(",");
@@ -35,19 +37,36 @@ const Main = ({ userData }) => {
   const [imgsrc, setImgsrc] = useState(null);
   const navigate = useNavigate();
   const [isLoading, SetIsLoading] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
+
   let dictdata = {};
   let analyzedImage = new Image();
 
   const now = new Date();
-  const year = now.getFullYear(); // 연도 가져오기 (네 자리 숫자로 반환)
-  const month = now.getMonth() + 1; // 월 가져오기 (0부터 시작하므로 1을 더해줌)
-  const day = now.getDate(); // 일 가져오기
-  const todayDate = year + "-" + month + "-" + day;
+  const year = now.getFullYear();
+  const month = now.getMonth() + 1;
+  const day = now.getDate();
+  // var todayDate = year + "-" + month + "-" + day;
 
   const [calendarList, setCalendarList] = useState([]);
   const localUserId = JSON.parse(localStorage.getItem(USER_DATA)).id;
 
+  const handleCalendarSelect = (date) => {
+    const formattedDate = moment(date).format("YYYY-MM-DD");
+    console.log("선택한 날짜:", formattedDate);
+    setSelectedDate(date); // 선택된 날짜 업데이트
+  };
+
   const handleCameraClick1 = useCallback(() => {
+    let todayDate = year + "-" + month + "-" + day;
+
+    if (selectedDate) {
+      const formattedDate = moment(selectedDate).format("YYYY-MM-DD");
+      console.log("저장할 날짜:", formattedDate);
+      todayDate = formattedDate;
+      console.log("저장할 날짜:", todayDate);
+    }
+
     let fileId = Date.now();
     let fileInput = document.createElement("input");
     fileInput.type = "file";
@@ -69,7 +88,7 @@ const Main = ({ userData }) => {
 
         ///기존 코드
 
-        fetch("http://52.63.108.154:8000/upload_image", {
+        fetch("http://3.25.233.36:8000/upload_image", {
           method: "POST",
           body: formData,
         })
@@ -84,8 +103,8 @@ const Main = ({ userData }) => {
               "dict data:",
               dictdata.person,
               dictdata.soju,
-              dictdata.beer,
-              todayDate
+              dictdata.beer
+              // todayDate
             );
             setImgsrc("data:image/jpeg;base64," + data.image);
 
@@ -112,6 +131,7 @@ const Main = ({ userData }) => {
               body: formData2,
             })
               .then((response) => {
+                console.log("Upload date: ", todayDate);
                 console.log("DB save done");
               })
               .catch((error) => console.error("Error:", error));
@@ -119,7 +139,7 @@ const Main = ({ userData }) => {
           .catch((error) => console.error("Error:", error)); //ml 서버 처리 에러 메시지
       });
     }
-  }, []);
+  }, [selectedDate, year, month, day]);
 
   useEffect(() => {
     if (userData) {
@@ -181,6 +201,7 @@ const Main = ({ userData }) => {
                     </a>
                   );
                 }}
+                onClickDay={handleCalendarSelect}
               />
             </div>
 

@@ -45,6 +45,23 @@ const User = ({ userData }) => {
 
     getId();
   }, []);
+  const formatDate = (month) => {
+    const now = new Date();
+    const year = now.getFullYear();
+    return `${year}-${month}`;
+  };
+
+  const getCustomLabel = (label) => {
+    if (label === "soju") {
+      return "소주";
+    } else if (label === "beer") {
+      return "맥주";
+    } else if (label === "count") {
+      return "술자리 횟수";
+    }
+
+    return label;
+  };
 
   return (
     userData && (
@@ -70,16 +87,21 @@ const User = ({ userData }) => {
                 }}
               >
                 <CartesianGrid stroke="#f5f5f5" />
-                <XAxis dataKey="month" scale="band" />
-                <YAxis />
+                <XAxis
+                  dataKey="month"
+                  scale="band"
+                  tickFormatter={formatDate}
+                  tick={{ fontSize: 12 }}
+                />
+                <YAxis tick={{ fontSize: 12 }} />
                 <Tooltip />
-                <Legend />
+                <Legend tickFormatter={getCustomLabel} />
 
                 <Bar dataKey="soju" barSize={20} fill="#92E0EB" />
                 <Bar dataKey="beer" barSize={20} fill="#C1B2ED" />
                 <Bar dataKey="count" barSize={20} fill="#A1D2FF" />
 
-                <Line type="monotone" dataKey="count" stroke="blue" />
+                {/* <Line type="monotone" dataKey="count" stroke="#A1D2FF" /> */}
 
                 {/* <Line type="monotone" dataKey="count" stroke="#ff7300" /> */}
               </ComposedChart>

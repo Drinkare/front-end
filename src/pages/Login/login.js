@@ -35,17 +35,12 @@ const Login = () => {
       let url =
         window.location.hostname === "localhost"
           ? "http://15.165.161.157:8080"
-          : "/api_be";
+          : "/api";
 
-      const loginApi = axios.create({
-        baseURL: url,
-      });
-
-      // fetch(`${url}/login/kakao?code=${code}`, {
-      //   method: "GET",
-      // })
-      loginApi
-        .get(`/login/kakao?code=${code}`)
+      fetch(`${url}/login/kakao?code=${code}`, {
+        method: "GET",
+      })
+        .then((res) => res.json())
         .then((result) => {
           console.log("result", result);
           localStorage.setItem(USER_DATA, JSON.stringify(result));

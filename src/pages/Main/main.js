@@ -200,6 +200,7 @@ const Main = ({ userData }) => {
                   />
                 </a>
               </div>
+
               <div onClick={() => handleCameraClick1()}>
                 <FontAwesomeIcon
                   icon={faCamera}

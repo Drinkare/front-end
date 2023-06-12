@@ -17,7 +17,7 @@ const Login = () => {
   const REDIRECT_URI =
     window.location.hostname === "localhost"
       ? "http://localhost:3000/login"
-      : "https://drinkare.netlify.app";
+      : "https://drinkare.netlify.app/login";
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
   const kakaoLogin = () => {

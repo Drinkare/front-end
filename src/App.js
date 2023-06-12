@@ -6,7 +6,6 @@ import Main from "./pages/Main/main";
 import AnalyzePage from "./pages/Analyze/analyze";
 import User from "./pages/User/user";
 import Login from "./pages/Login/login";
-// import Kakao from "./pages/Kakao/kakao";
 import { USER_DATA } from "./constants/auth";
 
 function App() {

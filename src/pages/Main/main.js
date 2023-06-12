@@ -46,8 +46,6 @@ const Main = ({ userData }) => {
   const year = now.getFullYear();
   const month = now.getMonth() + 1;
   const day = now.getDate();
-  // var todayDate = year + "-" + month + "-" + day;
-
   const [calendarList, setCalendarList] = useState([]);
   const localUserId = JSON.parse(localStorage.getItem(USER_DATA)).id;
 
@@ -76,19 +74,14 @@ const Main = ({ userData }) => {
     if (fileInput !== null) {
       fileInput.addEventListener("change", () => {
         if (fileInput.files == null) return;
-
         const file = fileInput.files[0];
-
         const formData = new FormData();
         formData.append("image", file, file.name);
 
         console.log(formData.getAll("image"));
-
         SetIsLoading(true);
 
-        ///기존 코드
-
-        fetch("http://3.25.233.36:8000/upload_image", {
+        fetch("http://3.26.255.24:8000/upload_image2", {
           method: "POST",
           body: formData,
         })
@@ -99,16 +92,8 @@ const Main = ({ userData }) => {
             img.src = "data:image/jpeg;base64," + data.image;
 
             dictdata = data.data;
-            console.log(
-              "dict data:",
-              dictdata.person,
-              dictdata.soju,
-              dictdata.beer
-              // todayDate
-            );
             setImgsrc("data:image/jpeg;base64," + data.image);
 
-            ////////////
             console.log();
             // 여기서 받아온 정보를 DB로 보내야함
             const formData2 = new FormData();
@@ -145,7 +130,6 @@ const Main = ({ userData }) => {
     if (userData) {
       const getCalendarInfo = async () => {
         for (let m = 1; m <= month; m++) {
-          //모든 달 정보 가져오기 위해 반복문
           fetch("http://15.165.161.157:8080/api/query/getmonth", {
             method: "POST",
             headers: {
@@ -180,19 +164,15 @@ const Main = ({ userData }) => {
               <Calendar
                 onChange={onChange}
                 value={value}
-                formatDay={(locale, date) => moment(date).format("DD")} // 날'일' 제외하고 숫자만 보이도록 설정
-                //tileContent 에 값이 있는 경우 dot class 추가
-
+                formatDay={(locale, date) => moment(date).format("DD")}
                 tileContent={({ date, view }) => {
                   let html = [];
-                  // 현재 날짜가 post 작성한 날짜 배열(mark)에 있다면, dot div 추가
                   const formattedDate = moment(date).format("YYYY-MM-DD");
 
                   if (calendarList.find((x) => x === formattedDate)) {
                     html.push(<div className="dot"></div>);
                   }
                   return (
-                    //여기서 각 날짜별 analyze 된 링크로 받아올 수 있어야함
                     <a
                       href={`/analyze?date=${formattedDate}`}
                       className="dotContainer"

@@ -6,7 +6,6 @@ import imgSrc from "../../assets/analyzedPhoto.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 import { USER_DATA } from "../../constants/auth";
-import domtoimage from "dom-to-image";
 import { saveAs } from "file-saver";
 import { useLocation } from "react-router-dom";
 
@@ -24,8 +23,7 @@ const AnalyzePage = ({ userData }) => {
     soju: 0,
     people: 0,
   });
-  const [imageError, setImageError] = useState(false); // New state to track image loading error
-
+  const [imageError, setImageError] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -48,9 +46,9 @@ const AnalyzePage = ({ userData }) => {
 
     if (!analyzedate) {
       const now = new Date();
-      const year = now.getFullYear(); // 연도 가져오기 (네 자리 숫자로 반환)
-      const month = now.getMonth() + 1; // 월 가져오기 (0부터 시작하므로 1을 더해줌)
-      const day = now.getDate(); // 일 가져오기
+      const year = now.getFullYear();
+      const month = now.getMonth() + 1;
+      const day = now.getDate();
       analyzedate = year + "-" + month + "-" + day;
       console.log(analyzedate);
     }
@@ -62,7 +60,6 @@ const AnalyzePage = ({ userData }) => {
       day,
     });
 
-    // date, userId 로 post 요청 보내기
     const getDetail = () => {
       fetch("http://15.165.161.157:8080/api/query/getdetail", {
         method: "POST",
@@ -71,7 +68,6 @@ const AnalyzePage = ({ userData }) => {
         },
         body: JSON.stringify({
           userId: localUserId,
-          // userId: userData.id,
           date: analyzedate,
         }),
       })
@@ -106,7 +102,6 @@ const AnalyzePage = ({ userData }) => {
     onInit();
   }, [userData]);
   const handleImageError = () => {
-    // Event handler for image loading error
     setImageError(true);
   };
   return (

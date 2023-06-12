@@ -14,7 +14,10 @@ const Login = () => {
   const navigate = useNavigate();
   const REST_API_KEY = "532d7168dd0821f3756ea1293ba8dea4";
   // const REDIRECT_URI = "http://localhost:3000/login";
-  const REDIRECT_URI = "https://drinkare.netlify.app";
+  const REDIRECT_URI =
+    window.location.hostname === "localhost"
+      ? "http://localhost:3000/login"
+      : "https://drinkare.netlify.app";
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
   const kakaoLogin = () => {
@@ -29,7 +32,12 @@ const Login = () => {
     if (code) {
       console.log("code:", code);
       console.log("exists");
-      fetch(`http://15.165.161.157:8080/login/kakao?code=${code}`, {
+      let url =
+        window.location.hostname === "localhost"
+          ? "http://15.165.161.157:8080"
+          : "/api_be";
+
+      fetch(`${url}/login/kakao?code=${code}`, {
         method: "GET",
       })
         .then((response) => response.json())

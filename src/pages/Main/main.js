@@ -81,7 +81,7 @@ const Main = ({ userData }) => {
         console.log(formData.getAll("image"));
         SetIsLoading(true);
 
-        fetch("http:/52.64.13.139:8000/upload_image2", {
+        fetch("http://52.64.13.139:8000/upload_image2", {
           method: "POST",
           body: formData,
         })

@@ -107,14 +107,9 @@ const AnalyzePage = ({ userData }) => {
   return (
     userData && (
       <div className="analyzeContainer">
-        <img
-          src={dataList.image}
-          width="200px"
-          className="analyzeImage"
-          // onError={handleImageError} // Event handler to handle image loading error
-        />
-
-        {/* <img src={data.imgUrl} width="200px" className="analyzeImage" /> */}
+        <div>
+          <img src={dataList.image} width="200px" className="analyzeImage" />
+        </div>
         <div className="analyzeTextContainer">
           <div className="analyzeTextContent">
             {dateInfo.year}년 {dateInfo.month}월 {dateInfo.day}일

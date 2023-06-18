@@ -159,7 +159,7 @@ const Main = ({ userData }) => {
         {isLoading ? (
           <Loader />
         ) : (
-          <div>
+          <div className="mainContainer">
             <div className="mainCalendar">
               <Calendar
                 onChange={onChange}

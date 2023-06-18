@@ -35,8 +35,9 @@
 }
 .analyzeBtn{
     display:flex;
-    position:fixed;
-    bottom:20px;
+    /* position:fixed; */
+    /* bottom:20px; */
+    margin:20px;
 
     
 }

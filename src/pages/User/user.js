@@ -115,9 +115,12 @@ const User = ({ userData }) => {
                 {/* <Line type="monotone" dataKey="count" stroke="#ff7300" /> */}
               </ComposedChart>
             </ResponsiveContainer>
-            <div className="subTitle">
-              <b>2023</b>년 월별 술자리 횟수 📈
-            </div>
+          </div>
+
+          <div className="subTitle">
+            <b>2023</b>년 월별 술자리 횟수 📈
+          </div>
+          <div className="userStatisticsItem">
             <ResponsiveContainer width="100%" height="100%">
               <ComposedChart
                 width={500}
@@ -161,20 +164,6 @@ const User = ({ userData }) => {
                 {/* <Line type="monotone" dataKey="count" stroke="#ff7300" /> */}
               </ComposedChart>
             </ResponsiveContainer>
-            {/* <ResponsiveContainer width="100%" height="100%">
-              <PieChart width={400} height={400}>
-                <Pie
-                  data={dataList}
-                  dataKey="soju"
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={70}
-                  outerRadius={90}
-                  fill="#82ca9d"
-                  label
-                />
-              </PieChart>
-            </ResponsiveContainer> */}
           </div>
         </div>
 

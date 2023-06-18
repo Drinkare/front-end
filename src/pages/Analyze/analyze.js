@@ -33,7 +33,7 @@ const AnalyzePage = ({ userData }) => {
     fetch(imageUrl)
       .then((res) => res.blob())
       .then((blob) => {
-        saveAs(blob, "myItem{analyzedDate}.jpeg");
+        saveAs(blob, "img_${analyzedDate}.jpeg");
       })
       .catch((err) => {
         console.error("Error downloading image:", err);

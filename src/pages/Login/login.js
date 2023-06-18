@@ -13,7 +13,12 @@ import { USER_DATA } from "../../constants/auth";
 const Login = () => {
   const navigate = useNavigate();
   const REST_API_KEY = "532d7168dd0821f3756ea1293ba8dea4";
-  const REDIRECT_URI = "http://54.180.127.147:3000/login";
+  // const REDIRECT_URI = "http://54.180.127.147:3000/login";
+  const REDIRECT_URI =
+    window.location.hostname === "localhost"
+      ? "http://localhost:3000/login"
+      : "http://54.180.127.147:3000/login";
+
   // const REDIRECT_URI = "http://localhost:3000/login";
   // const REDIRECT_URI = "https://drinkare.netlify.app";
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
